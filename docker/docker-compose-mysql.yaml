@@ -1,0 +1,22 @@
+services:
+  mysql:
+    image: mysql:latest
+    container_name: mysql_db
+    volumes:
+      - mysql_volume:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - my_network
+    environment:
+      - MYSQL_ROOT_PASSWORD=root_password
+      - MYSQL_DATABASE=mysql_db
+      - MYSQL_USER=mysql_user
+      - MYSQL_PASSWORD=mysql_password
+    restart: always
+
+volumes:
+  mysql_volume:
+
+networks:
+  my_network:
