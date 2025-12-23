@@ -1,4 +1,6 @@
-# Python
+# ===========================
+# Python & Package Management
+# ===========================
 __pycache__/
 *.py[cod]
 *$py.class
@@ -23,22 +25,9 @@ share/python-wheels/
 *.egg
 MANIFEST
 
-# Django
-*.log
-local_settings.py
-db.sqlite3
-db.sqlite3-journal
-/media
-/staticfiles
-/static_root
-/static_collected
-
-# Django migrations (uncomment if you want to ignore migrations)
-# */migrations/*.py
-# */migrations/*.pyc
-# !*/migrations/__init__.py
-
+# ===========================
 # Virtual Environment
+# ===========================
 venv/
 env/
 ENV/
@@ -46,27 +35,35 @@ env.bak/
 venv.bak/
 .venv/
 
+# ===========================
 # Environment variables
+# ===========================
 .env
 .env.local
 .env.*.local
 *.env
 
-# IDE - PyCharm
+# ===========================
+# IDE
+# ===========================
+# PyCharm
 .idea/
 *.iml
 *.iws
 *.ipr
 
-# IDE - VS Code
+# VS Code
 .vscode/
 *.code-workspace
 
-# IDE - Sublime Text
+# Sublime Text
 *.sublime-project
 *.sublime-workspace
 
-# OS - Windows
+# ===========================
+# OS Specific Files
+# ===========================
+# Windows
 Thumbs.db
 ehthumbs.db
 Desktop.ini
@@ -78,39 +75,61 @@ $RECYCLE.BIN/
 *.msp
 *.lnk
 
-# OS - macOS
+# macOS
 .DS_Store
 .AppleDouble
 .LSOverride
 ._*
 
-# OS - Linux
+# Linux
 *~
 .directory
 .Trash-*
 
-# Database files
+# ===========================
+# Django & Database
+# ===========================
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
 *.db
 *.sqlite
-*.sqlite3
 db/mongo/
 db/mysql/
 
-# Logs
-logs/
+# ===========================
+# Django Media & Static
+# ===========================
+/media
+/staticfiles
+/static_root
+/static_collected
+
+# ===========================
+# Logs & Temporary Files
+# ===========================
 *.log
+logs/
+*.tmp
+*.temp
+*.swp
+*.swo
 
-# Docker
-docker-compose.override.yml
-.dockerignore
-
-# Testing
+# ===========================
+# Testing & Coverage
+# ===========================
 .pytest_cache/
 .coverage
+.coverage.*
+coverage.xml
+*.cover
 htmlcov/
 .tox/
 .hypothesis/
 
+# ===========================
+# Additional Tools
+# ===========================
 # Jupyter Notebook
 .ipynb_checkpoints
 
@@ -121,13 +140,6 @@ htmlcov/
 celerybeat-schedule
 celerybeat.pid
 
-# Coverage reports
-htmlcov/
-.coverage
-.coverage.*
-coverage.xml
-*.cover
-
 # mypy
 .mypy_cache/
 .dmypy.json
@@ -136,14 +148,5 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# Temporary files
-*.tmp
-*.temp
-*.swp
-*.swo
-*~
 
-# Application specific
-app-config/
-req.txt
 
