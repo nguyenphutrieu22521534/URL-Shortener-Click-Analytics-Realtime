@@ -50,9 +50,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "applications.common.middleware.RequestLogMiddleware",
 ]
-
-MIDDLEWARE.insert(0, 'applications.common.middleware.RequestIDMiddleware')
 
 ROOT_URLCONF = 'shorter.urls'
 
