@@ -94,8 +94,6 @@ db.sqlite3
 db.sqlite3-journal
 *.db
 *.sqlite
-db/mongo/
-db/mysql/
 
 # ===========================
 # Django Media & Static
