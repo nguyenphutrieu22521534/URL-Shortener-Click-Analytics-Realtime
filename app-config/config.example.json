@@ -2,9 +2,9 @@
   "mysql": {
     "host": "localhost",
     "port": 3306,
-    "db": "mysql_db",
-    "user": "root",
-    "password": "root_password"
+    "db": "your_database_name",
+    "user": "your_username",
+    "password": "your_password"
   },
   "redis": {
     "host": "localhost",

@@ -36,12 +36,13 @@ venv.bak/
 .venv/
 
 # ===========================
-# Environment variables
+# Config & Secrets
 # ===========================
 .env
 .env.local
 .env.*.local
 *.env
+app-config/config.json
 
 # ===========================
 # IDE
@@ -98,16 +99,16 @@ db.sqlite3-journal
 # ===========================
 # Django Media & Static
 # ===========================
-/media
-/staticfiles
-/static_root
-/static_collected
+media/
+staticfiles/
+static_root/
+static_collected/
 
 # ===========================
 # Logs & Temporary Files
 # ===========================
 *.log
-logs/
+logs/*.log
 *.tmp
 *.temp
 *.swp
@@ -126,6 +127,13 @@ htmlcov/
 .hypothesis/
 
 # ===========================
+# Celery
+# ===========================
+celerybeat-schedule
+celerybeat.pid
+celerybeat-schedule.db
+
+# ===========================
 # Additional Tools
 # ===========================
 # Jupyter Notebook
@@ -134,10 +142,6 @@ htmlcov/
 # pyenv
 .python-version
 
-# Celery
-celerybeat-schedule
-celerybeat.pid
-
 # mypy
 .mypy_cache/
 .dmypy.json
@@ -145,6 +149,3 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-
-
-

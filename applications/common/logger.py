@@ -11,10 +11,15 @@ class JsonFormatter(logging.Formatter):
             "level": record.levelname,
             "message": record.getMessage(),
             "module": record.module,
+            "function": record.funcName,
+            "line": record.lineno,
         }
 
         if hasattr(record, "extra"):
             log_record.update(record.extra)
+
+        if record.exc_info:
+            log_record["exception"] = self.formatException(record.exc_info)
 
         return json.dumps(log_record, ensure_ascii=False)
 
@@ -25,7 +30,7 @@ def get_logger(name="app"):
     if logger.handlers:
         return logger
 
-    logger.setLevel(logging.INFO)
+    logger.setLevel(logging.DEBUG)
 
     handler = logging.StreamHandler(sys.stdout)
     handler.setFormatter(JsonFormatter())
