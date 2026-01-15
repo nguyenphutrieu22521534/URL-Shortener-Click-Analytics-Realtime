@@ -77,10 +77,15 @@ WSGI_APPLICATION = 'shorter.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': BASE_DIR / 'db.mysql',
+    "default": {
+        "ENGINE": "django.db.backends.mysql",
+        "NAME": "mysql_db",
+        "USER": "root",
+        "PASSWORD": "root_password",
+        "HOST": "localhost",
+        "PORT": 3306,
     }
 }
 

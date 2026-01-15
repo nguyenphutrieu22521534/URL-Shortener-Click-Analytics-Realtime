@@ -13,5 +13,8 @@
   "mongo": {
     "uri": "mongodb://localhost:27017",
     "db": "analytics"
+  },
+  "jwt": {
+    "secret": "333c79b4ef25748ac67009df572523df23023f734fa00c4d7d3fdadf568ef986"
   }
 }
