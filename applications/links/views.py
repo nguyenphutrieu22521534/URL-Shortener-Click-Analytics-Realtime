@@ -1,3 +1,4 @@
+from django.db.models import Sum, Count, Q
 from rest_framework import viewsets, status, filters
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -6,6 +7,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 from .models import Link
 from .serializers import LinkSerializer, LinkCreateSerializer, LinkUpdateSerializer
+from .filters import LinkFilter
 from applications.common.rate_limit import check_rate_limit, RateLimitExceeded
 from applications.common.exceptions import RateLimitException
 
@@ -21,29 +23,15 @@ class LinkViewSet(viewsets.ModelViewSet):
     destroy: Soft delete link
     """
     permission_classes = [IsAuthenticated]
-    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    filterset_class = LinkFilter
     search_fields = ['title', 'original_url', 'short_code']
     ordering_fields = ['created_at', 'click_count', 'expires_at']
     ordering = ['-created_at']
 
     def get_queryset(self):
         """Chỉ lấy links của user hiện tại (không bao gồm deleted)"""
-        queryset = Link.objects.by_owner(self.request.user)
-
-        # Filter theo is_active
-        is_active = self.request.query_params.get('is_active')
-        if is_active is not None:
-            queryset = queryset.filter(is_active=is_active.lower() == 'true')
-
-        # Filter theo expired
-        expired = self.request.query_params.get('expired')
-        if expired is not None:
-            if expired.lower() == 'true':
-                queryset = queryset.expired()
-            else:
-                queryset = queryset.active()
-
-        return queryset
+        return Link.objects.by_owner(self.request.user)
 
     def get_serializer_class(self):
         if self.action == 'create':
@@ -120,9 +108,11 @@ class LinkViewSet(viewsets.ModelViewSet):
         """Thống kê tổng quan links của user"""
         user_links = Link.objects.filter(owner=request.user, deleted_at__isnull=True)
 
-        return Response({
-            "total_links": user_links.count(),
-            "active_links": user_links.filter(is_active=True).count(),
-            "inactive_links": user_links.filter(is_active=False).count(),
-            "total_clicks": sum(link.click_count for link in user_links),
-        })
+        data = user_links.aggregate(
+            total_links=Count('id'),
+            active_links=Count('id', filter=Q(is_active=True)),
+            inactive_links=Count('id', filter=Q(is_active=False)),
+            total_clicks=Sum('click_count', default=0)
+        )
+
+        return Response(data)

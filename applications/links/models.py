@@ -11,6 +11,39 @@ def generate_short_code(length=7):
     return ''.join(random.choices(chars, k=length))
 
 
+
+
+class LinkQuerySet(models.QuerySet):
+    """Custom QuerySet với các query thường dùng"""
+
+    def active(self):
+        """Lấy các link đang hoạt động"""
+        return self.filter(
+            is_active=True,
+            deleted_at__isnull=True
+        ).exclude(
+            expires_at__lt=timezone.now()
+        )
+
+    def by_owner(self, user):
+        """Lấy links của một user (không bao gồm deleted)"""
+        return self.filter(
+            owner=user,
+            deleted_at__isnull=True
+        )
+
+    def expired(self):
+        """Lấy các link đã hết hạn"""
+        return self.filter(
+            expires_at__lt=timezone.now(),
+            deleted_at__isnull=True
+        )
+
+    def deleted(self):
+        """Lấy các link đã soft delete"""
+        return self.filter(deleted_at__isnull=False)
+
+
 class Link(models.Model):
     """Model lưu trữ short links"""
 
@@ -64,6 +97,8 @@ class Link(models.Model):
         db_index=True,
         verbose_name='Deleted At'
     )
+
+    objects = LinkQuerySet.as_manager()
 
     class Meta:
         db_table = 'links'
@@ -123,39 +158,3 @@ class Link(models.Model):
         """Tăng click count (dùng cho fallback, chính sẽ dùng Redis)"""
         self.click_count = models.F('click_count') + 1
         self.save(update_fields=['click_count'])
-
-
-class LinkManager(models.Manager):
-    """Custom manager với các query thường dùng"""
-
-    def active(self):
-        """Lấy các link đang hoạt động"""
-        return self.filter(
-            is_active=True,
-            deleted_at__isnull=True
-        ).exclude(
-            expires_at__lt=timezone.now()
-        )
-
-    def by_owner(self, user):
-        """Lấy links của một user (không bao gồm deleted)"""
-        return self.filter(
-            owner=user,
-            deleted_at__isnull=True
-        )
-
-    def expired(self):
-        """Lấy các link đã hết hạn"""
-        return self.filter(
-            expires_at__lt=timezone.now(),
-            deleted_at__isnull=True
-        )
-
-    def deleted(self):
-        """Lấy các link đã soft delete"""
-        return self.filter(deleted_at__isnull=False)
-
-
-# Gán manager vào model
-Link.objects = LinkManager()
-Link.objects.model = Link
