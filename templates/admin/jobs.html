@@ -1,0 +1,83 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+<h1>Manual Jobs</h1>
+
+{% if message %}
+<div style="background: #d4edda; color: #155724; padding: 15px; border-radius: 4px; margin-bottom: 20px;">
+    {{ message }}
+</div>
+{% endif %}
+
+<div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+    <table style="width: 100%; border-collapse: collapse;">
+        <thead>
+            <tr style="background: #f5f5f5;">
+                <th style="padding: 15px; text-align: left;">Job</th>
+                <th style="padding: 15px; text-align: left;">Description</th>
+                <th style="padding: 15px; text-align: left;">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Aggregate Clicks -->
+            <tr style="border-bottom: 1px solid #eee;">
+                <td style="padding: 15px; font-weight: bold;">aggregate_clicks</td>
+                <td style="padding: 15px;">Tổng hợp clicks từ raw events</td>
+                <td style="padding: 15px;">
+                    <form method="post" style="display: inline;">
+                        {% csrf_token %}
+                        <input type="hidden" name="job" value="aggregate_clicks">
+                        <button type="submit" style="background: #417690; color: white; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer;">Run</button>
+                    </form>
+                </td>
+            </tr>
+
+            <!-- Rollup Daily -->
+            <tr style="border-bottom: 1px solid #eee;">
+                <td style="padding: 15px; font-weight: bold;">rollup_daily</td>
+                <td style="padding: 15px;">Rollup thống kê theo ngày</td>
+                <td style="padding: 15px;">
+                    <form method="post" style="display: inline;">
+                        {% csrf_token %}
+                        <input type="hidden" name="job" value="rollup_daily">
+                        <input type="date" name="date" style="padding: 6px; margin-right: 10px;">
+                        <button type="submit" style="background: #417690; color: white; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer;">Run</button>
+                    </form>
+                </td>
+            </tr>
+
+            <!-- Detect Anomaly -->
+            <tr style="border-bottom: 1px solid #eee;">
+                <td style="padding: 15px; font-weight: bold;">detect_anomaly</td>
+                <td style="padding: 15px;">Phát hiện bất thường</td>
+                <td style="padding: 15px;">
+                    <form method="post" style="display: inline;">
+                        {% csrf_token %}
+                        <input type="hidden" name="job" value="detect_anomaly">
+                        <button type="submit" style="background: #417690; color: white; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer;">Run</button>
+                    </form>
+                </td>
+            </tr>
+
+            <!-- Compact Click Events -->
+            <tr style="border-bottom: 1px solid #eee;">
+                <td style="padding: 15px; font-weight: bold;">compact_click_events</td>
+                <td style="padding: 15px;">Xóa events cũ đã xử lý</td>
+                <td style="padding: 15px;">
+                    <form method="post" style="display: inline;">
+                        {% csrf_token %}
+                        <input type="hidden" name="job" value="compact_click_events">
+                        <input type="number" name="days" value="30" min="1" style="width: 60px; padding: 6px; margin-right: 10px;">
+                        <span style="margin-right: 10px;">days to keep</span>
+                        <button type="submit" style="background: #e74c3c; color: white; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer;">Run</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div style="margin-top: 20px;">
+    <a href="/admin/dashboard/" class="button" style="background: #417690; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px;">← Back to Dashboard</a>
+</div>
+{% endblock %}
